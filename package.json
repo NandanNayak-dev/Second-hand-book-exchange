@@ -1,0 +1,28 @@
+{
+  "name": "second-hand-book-exchange",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NandanNayak-dev/Second-hand-book-exchange.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/NandanNayak-dev/Second-hand-book-exchange/issues"
+  },
+  "homepage": "https://github.com/NandanNayak-dev/Second-hand-book-exchange#readme",
+  "dependencies": {
+    "ejs": "^4.0.1",
+    "ejs-mate": "^4.0.0",
+    "express": "^5.2.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^9.2.1"
+  }
+}
