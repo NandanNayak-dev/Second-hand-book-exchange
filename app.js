@@ -24,11 +24,11 @@ main().then(() => console.log("connected to database")).catch((err) => console.l
 //--------------MONGOOSE CONNECTION------------------
 
 app.get("/",(req,res)=>{
-    res.send("home");
+    res.send("Root Route");
 })
-app.get("/booklist",async(req,res)=>{
+app.get("/booklistings",async(req,res)=>{
     const books=await booklist.find({});
-    res.send(books);
+    res.render("booklistings/index",{books});
 })
 
 

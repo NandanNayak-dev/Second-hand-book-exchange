@@ -1,0 +1,10 @@
+<% layout("/layouts/boilerplate") %>
+<ul>
+    <% for(let book of books){ %>
+    <li><%=book.title%></li>
+    <li><%=book.author%></li>
+    <li><%=book.description%></li>
+    <li><%=book.price%></li>
+    <img src="<%= book.image %>" alt="No Image">
+    <% } %>
+</ul>

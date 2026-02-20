@@ -1,0 +1,48 @@
+body{
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container{
+    flex: 1;
+}
+
+/* Simple Navbar */
+.navbar{
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0.8rem 0;
+    height: 4.5rem;
+}
+
+.navbar-brand{
+    font-weight: 600;
+    color: #222 !important;
+}
+
+.navbar-brand i{
+    color: #2E7D32;
+    margin-right: 0.3rem;
+    font-size: 2rem;
+}
+
+.nav-link{
+    color: #333 !important;
+    margin-right: 0.5rem;
+    
+}
+
+.nav-link:hover{
+    color: #2E7D32 !important;
+}
+
+.nav-link.active{
+    color: #2E7D32 !important;
+}
+.collapse ul li{
+    font-size:1.1rem;
+}
+/*===================*/
+
