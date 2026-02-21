@@ -40,10 +40,9 @@ res.send("New Book Route");
 //Show Particular Book=====
 app.get("/booklistings/:id",async(req,res)=>{
     const {id}=req.params;
+    const book=await booklist.findById(id);
     res.render("booklistings/show",{book});
 })
-
-
 
 
 app.listen(8080, () => {

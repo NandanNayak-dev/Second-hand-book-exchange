@@ -1,11 +1,14 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary p-2 p-lg-3" id="mainNavbar">
-  <div class="container-fluid flex-lg-column align-items-lg-start h-100">
+<nav
+  class="navbar navbar-expand-lg navbar-light bg-body-tertiary p-2 p-lg-3"
+  id="mainNavbar"
+>
+  <div class="container-fluid flex-lg-column align-items-lg-start">
     <a class="navbar-brand mb-lg-4" href="/">
       <i class="fa-solid fa-book-open-reader me-2"></i>Book Exchange
     </a>
 
     <button
-      class="navbar-toggler mb-2"
+      class="navbar-toggler mb-2 ms-auto"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarContent"
@@ -16,7 +19,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse w-100 h-100 flex-column" id="navbarContent">
+    <div class="collapse navbar-collapse w-100 flex-column" id="navbarContent">
       <!-- Top content -->
       <ul class="navbar-nav flex-lg-column w-100">
         <li class="nav-item">
@@ -33,13 +36,115 @@
       <!-- Search -->
       <form class="d-flex flex-column w-100 mt-3 mt-lg-auto" role="search">
         <input class="form-control mb-2" type="search" placeholder="Search" />
-        <button class="btn btn-outline-success w-100" type="submit">Search</button>
+        <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
     </div>
   </div>
 </nav>
 
 <style>
+  @media (max-width: 991.98px) {
+    #mainNavbar {
+      height: auto;
+      min-height: 4.5rem;
+      position: relative;
+      width: 100%;
+    }
+
+    #mainNavbar .container-fluid {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.25rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+
+    #mainNavbar .navbar-brand {
+      margin-bottom: 0;
+      font-size: 1.05rem;
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+    }
+
+    /* Collapsed content styling */
+    #mainNavbar .navbar-collapse {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      background: transparent;
+    }
+
+    /* Make nav links horizontal on small screens when expanded */
+    #mainNavbar .navbar-nav {
+      flex-direction: row;
+      gap: 0.125rem;
+      padding-left: 0.125rem;
+      padding-right: 0.125rem;
+      margin-left: 0;
+    }
+
+    #mainNavbar .navbar-nav .nav-item {
+      margin-bottom: 0;
+      padding-left: 0.125rem;
+      padding-right: 0.125rem;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* Push each link in from the left edge to match brand/search padding */
+    #mainNavbar .nav-link {
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+      display: inline-block;
+    }
+
+    /* Search / form adjustments */
+    #mainNavbar form[role="search"] {
+      flex-direction: row;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    #mainNavbar form[role="search"] .form-control {
+      margin-bottom: 0;
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 0.375rem 0.5rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Align search form edges with the brand/container */
+    #mainNavbar form[role="search"] {
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+      margin-left: 0;
+      margin-right: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    #mainNavbar form[role="search"] .btn {
+      flex: 0 0 auto;
+      margin-left: 0.5rem;
+      white-space: nowrap;
+      padding: 0.375rem 0.75rem;
+    }
+
+    /* Avoid any horizontal overflow on small screens */
+    html,
+    body {
+      overflow-x: hidden;
+    }
+
+    /* Page content padding for small screens */
+    .page-content {
+      margin-left: 0;
+      padding-top: 0.5rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+  }
+
   @media (min-width: 992px) {
     #mainNavbar {
       position: fixed;
@@ -52,10 +157,26 @@
       overscroll-behavior: contain;
     }
 
+    #mainNavbar .container-fluid,
+    #mainNavbar .navbar-collapse {
+      height: 100%;
+    }
+
     .page-content {
       margin-left: 260px;
       width: calc(100% - 260px);
       max-width: calc(100% - 260px);
+    }
+
+    /* On large screens the search button should be full width */
+    #mainNavbar form[role="search"] {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    #mainNavbar form[role="search"] .btn {
+      width: 100%;
+      margin-left: 0;
     }
   }
 </style>
