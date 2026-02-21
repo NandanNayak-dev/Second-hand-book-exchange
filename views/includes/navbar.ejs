@@ -1,26 +1,61 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#"><i class="fa-solid fa-book-open-reader"></i>
-</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg bg-body-tertiary p-2 p-lg-3" id="mainNavbar">
+  <div class="container-fluid flex-lg-column align-items-lg-start h-100">
+    <a class="navbar-brand mb-lg-4" href="/">
+      <i class="fa-solid fa-book-open-reader me-2"></i>Book Exchange
+    </a>
+
+    <button
+      class="navbar-toggler mb-2"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarContent"
+      aria-controls="navbarContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+    <div class="collapse navbar-collapse w-100 h-100 flex-column" id="navbarContent">
+      <!-- Top content -->
+      <ul class="navbar-nav flex-lg-column w-100">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">All Books</a>
+          <a class="nav-link" href="/booklistings">All Books</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Add New Book</a>
+          <a class="nav-link" href="/booklistings/new">Add New Book</a>
         </li>
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
+
+      <!-- Search -->
+      <form class="d-flex flex-column w-100 mt-3 mt-lg-auto" role="search">
+        <input class="form-control mb-2" type="search" placeholder="Search" />
+        <button class="btn btn-outline-success w-100" type="submit">Search</button>
       </form>
     </div>
   </div>
 </nav>
+
+<style>
+  @media (min-width: 992px) {
+    #mainNavbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100vh;
+      z-index: 1030;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .page-content {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      max-width: calc(100% - 260px);
+    }
+  }
+</style>

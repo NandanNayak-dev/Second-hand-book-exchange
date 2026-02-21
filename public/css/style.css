@@ -3,6 +3,7 @@ body{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .container{
@@ -15,6 +16,7 @@ body{
     border-bottom: 1px solid #e5e7eb;
     padding: 0.8rem 0;
     height: 4.5rem;
+    
 }
 
 .navbar-brand{
@@ -44,5 +46,9 @@ body{
 .collapse ul li{
     font-size:1.1rem;
 }
-/*===================*/
 
+img{
+    max-width: 100%;
+    height: auto;
+}
+/*===================*/
