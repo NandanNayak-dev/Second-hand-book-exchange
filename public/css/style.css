@@ -10,13 +10,19 @@ body{
     flex: 1;
 }
 
+a,
+a:hover,
+a:focus,
+a:active{
+    text-decoration: none !important;
+}
+
 /* Simple Navbar */
 .navbar{
     background-color: #ffffff !important;
     border-bottom: 1px solid #e5e7eb;
     padding: 0.8rem 0;
     height: 4.5rem;
-    
 }
 
 .navbar-brand{
@@ -51,4 +57,21 @@ img{
     max-width: 100%;
     height: auto;
 }
-/*===================*/
+/*===================================*/
+/*Index Page*/
+.heading{
+    font-size: 2.5rem;
+    margin: 1.5rem ;
+    color: #2E7D32;
+}
+
+.card-text b{
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+.show{
+    width: 40rem;
+    margin: 1rem ;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

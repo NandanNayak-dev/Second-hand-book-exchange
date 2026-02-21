@@ -1,10 +1,29 @@
 <% layout("/layouts/boilerplate") %>
-<ul>
-    <% for(let book of books){ %>
-    <li><%=book.title%></li>
-    <li><%=book.author%></li>
-    <li><%=book.description%></li>
-    <li><%=book.price%></li>
-    <img src="<%= book.image %>" alt="No Image">
-    <% } %>
-</ul>
+
+    <h1 class="heading">All Books</h1>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 ">
+     <% for(let book of books) { %>
+        <a href="/booklistings/<%= book._id %>">
+
+<div class="card col mb-4 shadow bg-body rounded" >
+
+  <img src="<%= book.image %>" class="card-img-top" alt="book-image" style="height: 20rem; ">
+  <div class="card-img-overlay"></div>
+  <div class="card-body">
+    <p class="card-text">
+        <b><%= book.title %></b> <br>
+        &#8377;
+<%= book.price != null 
+      ? book.price.toLocaleString("en-IN") 
+      : "Price not available" %>
+
+    
+    </p>
+  </div>
+</div>
+</a>
+<% } %>
+</div>
+
+

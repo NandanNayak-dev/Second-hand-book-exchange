@@ -26,9 +26,21 @@ main().then(() => console.log("connected to database")).catch((err) => console.l
 app.get("/",(req,res)=>{
     res.send("Root Route");
 })
+//--------------ROUTES------------------
 app.get("/booklistings",async(req,res)=>{
     const books=await booklist.find({});
     res.render("booklistings/index",{books});
+})
+//New Book Route=====
+app.get("/booklistings/new",async(req,res)=>{
+res.send("New Book Route");
+})
+
+
+//Show Particular Book=====
+app.get("/booklistings/:id",async(req,res)=>{
+    const {id}=req.params;
+    res.render("booklistings/show",{book});
 })
 
 

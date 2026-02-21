@@ -1,0 +1,16 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-4">
+    <div class="card col mb-4 show">
+        <img src="<%= book.image %>" class="card-img-top" alt="book-image" style="height: 20rem; width: 40rem; ">
+        <div class="card-body">
+            <h3 class="card-title mb-3 "><%= book.title %></h3>
+            <p class="card-text"><%= book.description %></p>
+            <p class="card-text"><b>Author:</b> <%= book.author %></p>
+            <p class="card-text"><b>Price:</b> <%= book.price != null 
+                ? book.price.toLocaleString("en-IN") 
+                : "Price not available" %></p>
+        </div>
+    </div>
+    <hr>
+</div>
