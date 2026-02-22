@@ -33,7 +33,13 @@ app.get("/booklistings",async(req,res)=>{
 })
 //New Book Route=====
 app.get("/booklistings/new",async(req,res)=>{
-res.send("New Book Route");
+    res.render("booklistings/new");
+})
+//Create Book Route=====
+app.post("/booklistings",async(req,res)=>{
+    const book=new booklist(req.body.booklisting);
+    await book.save();
+    res.redirect(`/booklistings/${book._id}`);
 })
 
 
