@@ -76,6 +76,10 @@ img{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.edit{
-    margin-left:1rem;
+.edit,.delete{
+    margin-right: 0.5rem;
+    margin-left:0.5rem;
+}
+.card-footer{
+    display: flex;
 }

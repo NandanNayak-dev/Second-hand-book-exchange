@@ -58,6 +58,13 @@ app.put("/booklistings/:id",async(req,res)=>{
 
 })
 
+//======Delete route==========
+app.delete("/booklistings/:id",async(req,res)=>{
+    const {id}=req.params;
+    await booklist.findByIdAndDelete(id);
+    res.redirect("/booklistings");
+})
+
 //Show Particular Book=====
 app.get("/booklistings/:id",async(req,res)=>{
     const {id}=req.params;
