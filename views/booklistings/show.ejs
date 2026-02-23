@@ -11,6 +11,9 @@
                 ? book.price.toLocaleString("en-IN") 
                 : "Price not available" %></p>
         </div>
+<form action="/booklistings/<%= book._id %>/edit">
+  <button class="btn btn-success mt-3 mb-3 edit">Edit</button>
+</form>
     </div>
     <hr>
 </div>

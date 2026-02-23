@@ -31,6 +31,7 @@ app.get("/booklistings",async(req,res)=>{
     const books=await booklist.find({});
     res.render("booklistings/index",{books});
 })
+//===============================
 //New Book Route=====
 app.get("/booklistings/new",async(req,res)=>{
     res.render("booklistings/new");
@@ -41,7 +42,21 @@ app.post("/booklistings",async(req,res)=>{
     await book.save();
     res.redirect(`/booklistings/${book._id}`);
 })
+//==========================================
 
+//==========Get Edit route============
+app.get("/booklistings/:id/edit",async(req,res)=>{
+    const {id}=req.params;
+    const bookToEdit=await booklist.findById(id);
+    res.render("booklistings/edit",{bookToEdit});
+})
+//=====Update route=========
+app.put("/booklistings/:id",async(req,res)=>{
+    const {id}=req.params;
+    const book=await booklist.findByIdAndUpdate(id,req.body.booklisting,{new:true});
+    res.redirect(`/booklistings/${book._id}`);
+
+})
 
 //Show Particular Book=====
 app.get("/booklistings/:id",async(req,res)=>{

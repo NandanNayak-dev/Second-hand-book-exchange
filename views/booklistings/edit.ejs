@@ -1,0 +1,51 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row mt-3">
+    <div class="col-8 offset-2">
+<br><br>
+    <h1>Add a Listing</h1>
+    <form action="/booklistings/<%= bookToEdit._id %>?_method=PUT" method="post" novalidate class="needs-validation">
+<div class="mb-3">
+<label for="title" class="form-label">Title</label>
+<input type="text" name="booklisting[title]" placeholder="Add a catchy title" class="form-control" value="<%= bookToEdit.title %>" required>
+<div class="valid-feedback">
+     Title Looks good!
+    </div>
+</div>
+
+<div class="mb-3">
+<label for="author" class="form-label">Author</label>
+<input type="text" name="booklisting[author]" placeholder="Enter author name" class="form-control" value="<%= bookToEdit.author %>" required>
+<div class="invalid-feedback">
+        Please provide a valid author name.
+    </div>
+</div>
+
+<div class="mb-3">
+<label for="description" class="form-label">Description</label>
+<textarea name="booklisting[description]" class="form-control"  required><%=bookToEdit.description %></textarea>
+<div class="invalid-feedback">
+        Please provide a description.
+    </div>
+</div>
+
+<div class="mb-3">
+<label for="price" class="form-label">Price</label>
+<input type="number" name="booklisting[price]" placeholder="Enter price" class="form-control" value="<%= bookToEdit.price %>" required>
+<div class="invalid-feedback">
+        Please provide a valid price.
+    </div>
+</div>
+
+<div class="mb-3">
+<label for="image" class="form-label">Image Link</label>
+<input type="text" name="booklisting[image]" placeholder="Enter image URL" class="form-control" value="<%= bookToEdit.image %>">
+</div>
+
+
+
+<button type="submit" class="btn btn-success add-btn mt-3 mb-3">Add Listing</button>
+    </form>
+</div>
+</div>
+
