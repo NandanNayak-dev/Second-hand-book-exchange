@@ -6,6 +6,12 @@ const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+const ExpressError = require("./utils/ExpressError");
+const session = require("express-session");
+const flash=require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+
 app.use(express.urlencoded({ extended: true }));
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
@@ -22,7 +28,27 @@ async function main() {
 main().then(() => console.log("connected to database")).catch((err) => console.log(err));
 
 //--------------MONGOOSE CONNECTION------------------
-
+const sessionOptions={
+    secret:"mysupersecretcode",
+  resave:false,
+  saveUninitialized:true,
+  cookie:{
+    expires:Date.now()+7*24*60*60*1000,
+    maxAge:7*24*60*60*1000,
+    httpOnly:true
+  }
+}
+app.use(session(sessionOptions));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+//========Flash Messages==========
+app.use((req,res,next)=>{
+  res.locals.success=req.flash("success");
+  res.locals.error=req.flash("error");
+  next();
+})
+//===============================
 app.get("/",(req,res)=>{
     res.send("Root Route");
 })
@@ -40,6 +66,7 @@ app.get("/booklistings/new",async(req,res)=>{
 app.post("/booklistings",async(req,res)=>{
     const book=new booklist(req.body.booklisting);
     await book.save();
+    req.flash("success","Book Added Successfully");
     res.redirect(`/booklistings/${book._id}`);
 })
 //==========================================
@@ -54,6 +81,7 @@ app.get("/booklistings/:id/edit",async(req,res)=>{
 app.put("/booklistings/:id",async(req,res)=>{
     const {id}=req.params;
     const book=await booklist.findByIdAndUpdate(id,req.body.booklisting,{new:true});
+    req.flash("success","Book Updated Successfully");
     res.redirect(`/booklistings/${book._id}`);
 
 })
@@ -62,6 +90,7 @@ app.put("/booklistings/:id",async(req,res)=>{
 app.delete("/booklistings/:id",async(req,res)=>{
     const {id}=req.params;
     await booklist.findByIdAndDelete(id);
+    req.flash("success","Book Deleted Successfully");
     res.redirect("/booklistings");
 })
 
@@ -70,6 +99,16 @@ app.get("/booklistings/:id",async(req,res)=>{
     const {id}=req.params;
     const book=await booklist.findById(id);
     res.render("booklistings/show",{book});
+})
+
+
+//=====Error=======
+app.use((req, res, next) => {
+    next(new ExpressError(404, "Page Not Found"));
+})
+app.use((err, req, res, next) => {
+    let{statusCode=500,message="Something went wrong"}=err;
+    res.status(statusCode).send(message);
 })
 
 
