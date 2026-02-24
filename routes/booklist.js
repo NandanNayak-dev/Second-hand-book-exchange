@@ -15,6 +15,7 @@ router.get("/new",async(req,res)=>{
 //Create Book Route=====
 router.post("/",wrapAsync(async(req,res)=>{
     const book=new booklist(req.body.booklisting);
+    book.owner=req.user._id;
     await book.save();
     req.flash("success","Book Added Successfully");
     res.redirect(`/booklistings/${book._id}`);

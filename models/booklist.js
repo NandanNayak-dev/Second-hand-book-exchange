@@ -31,6 +31,10 @@ const booklistSchema=new Schema({
       ref:"Review"
     }
   ],
+  owner:{
+    type:Schema.Types.ObjectId,
+    ref:"User"
+  }
 })
 const booklist=mongoose.model("booklist",booklistSchema);
 module.exports=booklist

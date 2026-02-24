@@ -18,10 +18,11 @@ app.use(methodOverride("_method"));
 const ejsMate = require("ejs-mate");
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname,"public")))
-
+const User=require("./models/user");
 
 const booklistRoutes=require("./routes/booklist")
 const reviewRoutes=require("./routes/review")
+const userRoutes=require("./routes/user")
 
 
 //-----------------MONGOOSE CONNECTION----------------
@@ -45,12 +46,19 @@ app.use(session(sessionOptions));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 //========Flash Messages==========
 app.use((req,res,next)=>{
   res.locals.success=req.flash("success");
   res.locals.error=req.flash("error");
+  res.locals.currentUser=req.user;
+  console.log(res.locals.currentUser);
+
   next();
 })
+
 //===============================
 app.get("/",(req,res)=>{
     res.send("Root Route");
@@ -59,6 +67,7 @@ app.get("/",(req,res)=>{
 //-----------Routes-----------
 app.use("/booklistings",booklistRoutes);
 app.use("/booklistings/:id/reviews",reviewRoutes);
+app.use("/",userRoutes);
 //--------------Routes------------------
 
 
