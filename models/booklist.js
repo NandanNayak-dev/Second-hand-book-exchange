@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
+const Review=require("./review");
 
 const booklistSchema=new Schema({
     title:{
@@ -23,7 +24,13 @@ const booklistSchema=new Schema({
         type:String,
         default:"https://www.alshameltechno.com/wp-content/themes/alshameltechno/images/sample.webp",
         set:(v)=>v===""?"https://www.alshameltechno.com/wp-content/themes/alshameltechno/images/sample.webp":v
+    },
+     reviews:[
+    {
+      type:Schema.Types.ObjectId,
+      ref:"Review"
     }
+  ],
 })
 const booklist=mongoose.model("booklist",booklistSchema);
 module.exports=booklist

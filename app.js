@@ -20,6 +20,8 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname,"public")))
 
 const booklist=require("./models/booklist")
+const Review=require("./models/review")
+
 
 //-----------------MONGOOSE CONNECTION----------------
 async function main() {
@@ -99,6 +101,17 @@ app.get("/booklistings/:id",async(req,res)=>{
     const {id}=req.params;
     const book=await booklist.findById(id);
     res.render("booklistings/show",{book});
+})
+//=============REVIEWS===========================
+app.post("/booklistings/:id/reviews",async(req,res)=>{
+    const {id}=req.params;
+    const book=await booklist.findById(id);
+    const review=new Review(req.body.review);
+    book.reviews.push(review);
+    await review.save();
+    await book.save();
+    req.flash("success","Review Added Successfully");
+    res.redirect(`/booklistings/${book._id}`);
 })
 
 

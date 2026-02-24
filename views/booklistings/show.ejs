@@ -23,4 +23,49 @@
         </div>
     </div>
     <hr>
+
+
+
+
+
+        <div class="row">
+        <div class="col-8 offset-2">
+            <h4>Leave a Review</h4>
+
+            <form action="/booklistings/<%= book._id %>/reviews" method="post" novalidate class="needs-validation">
+                <div class="mb-3">
+                    <label for="rating" class="form-label">Rating</label>
+                    <input
+                        type="range"
+                        id="rating"
+                        name="review[rating]"
+                        min="1"
+                        max="5"
+                        class="form-range"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="comment" class="form-label">Comment</label>
+                    <textarea
+                        name="review[comment]"
+                        id="comment"
+                        class="form-control"
+                        rows="4"
+                        required></textarea>
+                    <div class="invalid-feedback">
+                        Please provide a comment.
+                    </div>
+                </div>
+
+                <button class="btn btn-outline-dark">Submit</button>
+                
+            </form>
+            <br>
+        </div>
+<hr>
+
+
+        
+    </div>
 </div>
