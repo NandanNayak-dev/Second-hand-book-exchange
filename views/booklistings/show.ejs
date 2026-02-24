@@ -64,13 +64,16 @@
             <br>
         </div>
 <hr>
-
+<% if(book.reviews.length!==0) {%>
         <div class="col-8 offset-2">
             <h4>Reviews</h4>
             <% for(let review of book.reviews) { %>
             <div class="card mb-3">
-                <div class="card-body">
-                    <p class="card-text"><b>Rating:</b> <%= review.rating %></p>
+                <div class="card-body"><p class="card-text rating"><b>Rating:</b>
+                    <% for(let i=0;i<review.rating;i++){%>
+                        <i class="fa-solid fa-star"></i>
+                        <% }%>
+                        </p>
                     <p class="card-text"><b>Comment:</b> <%= review.comment %></p>
                 </div>
                 <form action="/booklistings/<%= book._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
@@ -79,6 +82,7 @@
             </div>
             <% } %>
         </div>
+        <% } else { %> <div class="col-8 offset-2 mb-4"><h4 class="text-center">No Reviews Available</h4></div> <% } %>
 
         
     </div>
