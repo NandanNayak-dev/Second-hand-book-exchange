@@ -65,6 +65,20 @@
         </div>
 <hr>
 
+        <div class="col-8 offset-2">
+            <h4>Reviews</h4>
+            <% for(let review of book.reviews) { %>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p class="card-text"><b>Rating:</b> <%= review.rating %></p>
+                    <p class="card-text"><b>Comment:</b> <%= review.comment %></p>
+                </div>
+                <form action="/booklistings/<%= book._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
+                    <button class="btn btn-outline-dark revdel">Delete</button>
+                </form>
+            </div>
+            <% } %>
+        </div>
 
         
     </div>

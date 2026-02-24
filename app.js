@@ -7,6 +7,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 const ExpressError = require("./utils/ExpressError");
+const wrapAsync = require("./utils/wrapAsync");
 const session = require("express-session");
 const flash=require("connect-flash");
 const passport = require("passport");
@@ -65,54 +66,64 @@ app.get("/booklistings/new",async(req,res)=>{
     res.render("booklistings/new");
 })
 //Create Book Route=====
-app.post("/booklistings",async(req,res)=>{
+app.post("/booklistings",wrapAsync(async(req,res)=>{
     const book=new booklist(req.body.booklisting);
     await book.save();
     req.flash("success","Book Added Successfully");
     res.redirect(`/booklistings/${book._id}`);
-})
+}))
 //==========================================
 
 //==========Get Edit route============
-app.get("/booklistings/:id/edit",async(req,res)=>{
+app.get("/booklistings/:id/edit",wrapAsync(async(req,res)=>{
     const {id}=req.params;
     const bookToEdit=await booklist.findById(id);
     res.render("booklistings/edit",{bookToEdit});
-})
+}))
 //=====Update route=========
-app.put("/booklistings/:id",async(req,res)=>{
+app.put("/booklistings/:id",wrapAsync(async(req,res)=>{
     const {id}=req.params;
     const book=await booklist.findByIdAndUpdate(id,req.body.booklisting,{new:true});
     req.flash("success","Book Updated Successfully");
     res.redirect(`/booklistings/${book._id}`);
 
-})
+}))
 
 //======Delete route==========
-app.delete("/booklistings/:id",async(req,res)=>{
-    const {id}=req.params;
-    await booklist.findByIdAndDelete(id);
-    req.flash("success","Book Deleted Successfully");
-    res.redirect("/booklistings");
-})
-
-//Show Particular Book=====
-app.get("/booklistings/:id",async(req,res)=>{
+app.delete("/booklistings/:id",wrapAsync(async(req,res)=>{
     const {id}=req.params;
     const book=await booklist.findById(id);
+    await Review.deleteMany({ _id: { $in: book.reviews } });
+    req.flash("success","Book Deleted Successfully");
+    res.redirect("/booklistings");
+}))
+
+//Show Particular Book=====
+app.get("/booklistings/:id",wrapAsync(async(req,res)=>{
+    const {id}=req.params;
+    const book=await booklist.findById(id).populate("reviews");
     res.render("booklistings/show",{book});
-})
+}))
+
 //=============REVIEWS===========================
-app.post("/booklistings/:id/reviews",async(req,res)=>{
+app.post("/booklistings/:id/reviews",wrapAsync(async(req,res)=>{
     const {id}=req.params;
     const book=await booklist.findById(id);
     const review=new Review(req.body.review);
-    book.reviews.push(review);
+    book.reviews.push(review._id);
     await review.save();
     await book.save();
     req.flash("success","Review Added Successfully");
     res.redirect(`/booklistings/${book._id}`);
-})
+}))
+//====Delete Review=====
+app.delete("/booklistings/:id/reviews/:reviewId",wrapAsync(async(req,res)=>{
+    const {id,reviewId}=req.params;
+    await booklist.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
+    await Review.findByIdAndDelete(reviewId);
+    req.flash("success","Review Deleted Successfully");
+    res.redirect(`/booklistings/${id}`);
+}))
 
 
 //=====Error=======
@@ -121,7 +132,7 @@ app.use((req, res, next) => {
 })
 app.use((err, req, res, next) => {
     let{statusCode=500,message="Something went wrong"}=err;
-    res.status(statusCode).send(message);
+    res.status(statusCode).render("error",{message});
 })
 
 

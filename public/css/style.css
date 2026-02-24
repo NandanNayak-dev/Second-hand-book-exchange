@@ -83,3 +83,6 @@ img{
 .card-footer{
     display: flex;
 }
+.revdel{
+    margin: 0.5rem;
+}
