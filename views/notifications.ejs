@@ -45,6 +45,10 @@
                       aria-label="Remove notification"
                     ></button>
                   </form>
+                  <form action="/notifications/<%= notice._id %>/<%= notice.booklistingId._id %>/<%= notice.userId._id %>/approve" method="post">
+                    <button>Approve</button>
+                  </form>
+
                 </div>
               </div>
             </div>

@@ -26,6 +26,7 @@ const userRoutes=require("./routes/user")
 
 const notifications=require("./models/buyAlert");
 const { isLoggedIn } = require("./middleware");
+const booklist = require('./models/booklist');
 //-----------------MONGOOSE CONNECTION----------------
 async function main() {
     await mongoose.connect("mongodb://127.0.0.1:27017/bookstore");
@@ -74,7 +75,7 @@ app.get("/notifications",isLoggedIn, async (req, res, next) => {
         { path: "booklistingId", select: "title price image" } // book
       ]
     });
-
+    // res.send(userWithNotifications.notifications);
     res.render("notifications", { notifications: userWithNotifications.notifications });
     // or: res.json(userWithNotifications.notifications);
   } catch (err) {
@@ -85,6 +86,21 @@ app.delete("/notifications/:notificationId", async (req, res, next) => {
   await notifications.findByIdAndDelete(req.params.notificationId);
   res.redirect("/notifications");
 })
+
+app.post("/notifications/:notificationId/:bookId/:buyerId/approve", isLoggedIn, async (req, res, next) => {
+  const { notificationId, bookId, buyerId } = req.params;
+
+  const book = await booklist.findById(bookId);
+  if (!book) return res.redirect("/notifications");
+
+  book.owner = buyerId;
+  await book.save();
+
+  await notifications.findByIdAndDelete(notificationId);
+  // await User.findByIdAndUpdate(req.user._id, { $pull: { notifications: notificationId } });
+
+  res.redirect(`/booklistings/${bookId}`);
+});
 
 
 //-----------Routes-----------
