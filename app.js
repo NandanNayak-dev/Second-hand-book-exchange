@@ -24,7 +24,7 @@ const booklistRoutes=require("./routes/booklist")
 const reviewRoutes=require("./routes/review")
 const userRoutes=require("./routes/user")
 
-
+const notifications=require("./models/buyAlert");
 //-----------------MONGOOSE CONNECTION----------------
 async function main() {
     await mongoose.connect("mongodb://127.0.0.1:27017/bookstore");
@@ -54,8 +54,6 @@ app.use((req,res,next)=>{
   res.locals.success=req.flash("success");
   res.locals.error=req.flash("error");
   res.locals.currentUser=req.user;
-  
-
   next();
 })
 
@@ -63,6 +61,24 @@ app.use((req,res,next)=>{
 app.get("/",(req,res)=>{
     res.send("Root Route");
 })
+
+app.get("/notifications", async (req, res, next) => {
+  try {
+    const userWithNotifications = await User.findById(req.user._id).populate({
+      path: "notifications",
+      populate: [
+        { path: "userId", select: "username email" },          // buyer
+        { path: "booklistingId", select: "title price image" } // book
+      ]
+    });
+
+    res.send(userWithNotifications.notifications);
+    // or: res.json(userWithNotifications.notifications);
+  } catch (err) {
+    next(err);
+  }
+});
+
 
 //-----------Routes-----------
 app.use("/booklistings",booklistRoutes);

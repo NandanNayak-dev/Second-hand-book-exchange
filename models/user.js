@@ -8,6 +8,12 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  notifications: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "BuyAlert",
+    },
+  ],
 });
 
 userSchema.plugin(passportLocalMongoose);

@@ -21,9 +21,13 @@
     <button class="btn btn-danger mt-3 mb-3 delete"><i class="fa-solid fa-trash"></i> Delete</button>
 </form>
 
+<!-- Buy Button -->
 
 <% if(currentUser!=null && currentUser.username != book.owner.username) { %>
-    <button class="btn btn-warning mt-3 mb-3 delete"><i class="fa-solid fa-cart-shopping"></i></i> Buy</button>
+
+    <form action="/booklistings/<%= book.owner._id %>/<%= currentUser._id %>/<%= book._id %>/buy" method="post">
+        <button class="btn btn-warning mt-3 mb-3 delete"><i class="fa-solid fa-cart-shopping"></i></i>Buy</button>
+    </form>
 <% } %>
         </div>
     </div>

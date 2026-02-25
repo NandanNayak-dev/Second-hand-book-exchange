@@ -4,7 +4,8 @@ const wrapAsync=require('../utils/wrapAsync');
 const booklist=require('../models/booklist');
 const Review=require("../models/review");
 const{isLoggedIn,isOwner,validateBooklisting}=require('../middleware');
-    
+const notifications=require("../models/buyAlert");
+const User=require("../models/user");
 
 
 router.get("/",async(req,res)=>{
@@ -73,6 +74,34 @@ const allBooks = await booklist.find({
 
 res.render("booklistings/index", { books: allBooks });
 })
+
+router.post("/:ownerId/:currentUserId/:bookId/buy", async (req, res) => {
+  const { currentUserId, bookId, ownerId } = req.params;
+
+  const notification = new notifications({
+    booklistingId: bookId,
+    userId: currentUserId,
+  });
+
+  await notification.save();
+  await notification.populate("booklistingId userId");
+
+   
+    const user = await User.findByIdAndUpdate(
+      ownerId,
+      { $push: { notifications: notification._id } },
+      { new: true } // return updated user
+    ).populate({
+      path: "notifications",
+      populate: [
+        { path: "booklistingId" },
+        { path: "userId" }
+      ]
+    });
+
+    res.redirect(`/booklistings/${bookId}`);
+});
+
 
 module.exports=router;
 
