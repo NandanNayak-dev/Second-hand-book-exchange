@@ -24,10 +24,6 @@
     </div>
     <hr>
 
-
-
-
-
         <div class="row">
         <div class="col-8 offset-2">
             <h4>Leave a Review</h4>
@@ -69,6 +65,9 @@
             <h4>Reviews</h4>
             <% for(let review of book.reviews) { %>
             <div class="card mb-3">
+                <div class="d-flex align-items-center gap-2 px-3 pt-3">
+                    <span class="fw-semibold text-dark name">Author: <%= review.author ? review.author.username : "Anonymous" %></span>
+                </div>
                 <div class="card-body"><p class="card-text rating"><b>Rating:</b>
                     <% for(let i=0;i<review.rating;i++){%>
                         <i class="fa-solid fa-star"></i>

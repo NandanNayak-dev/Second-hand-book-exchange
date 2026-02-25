@@ -3,7 +3,7 @@ const router=express.Router();
 const wrapAsync=require('../utils/wrapAsync');  
 const booklist=require('../models/booklist');
 const Review=require("../models/review");
-const{isLoggedIn,isOwner}=require('../middleware');
+const{isLoggedIn,isOwner,validateBooklisting}=require('../middleware');
     
 
 
@@ -17,7 +17,7 @@ router.get("/new",isLoggedIn,async(req,res)=>{
     res.render("booklistings/new");
 })
 //Create Book Route=====
-router.post("/",isLoggedIn,wrapAsync(async(req,res)=>{
+router.post("/",isLoggedIn,validateBooklisting,wrapAsync(async(req,res)=>{
     const book=new booklist(req.body.booklisting);
     book.owner=req.user._id;
     await book.save();
@@ -27,13 +27,13 @@ router.post("/",isLoggedIn,wrapAsync(async(req,res)=>{
 //==========================================
 
 //==========Get Edit route============
-router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync(async(req,res)=>{
+router.get("/:id/edit",isLoggedIn,isOwner,validateBooklisting,wrapAsync(async(req,res)=>{
     const {id}=req.params;
     const bookToEdit=await booklist.findById(id);
     res.render("booklistings/edit",{bookToEdit});
 }))
 //=====Update route=========
-router.put("/:id",isLoggedIn,isOwner,wrapAsync(async(req,res)=>{
+router.put("/:id",isLoggedIn,isOwner,validateBooklisting,wrapAsync(async(req,res)=>{
     const {id}=req.params;
     const book=await booklist.findByIdAndUpdate(id,req.body.booklisting,{new:true});
     req.flash("success","Book Updated Successfully");
@@ -54,7 +54,10 @@ router.delete("/:id",isLoggedIn,isOwner,wrapAsync(async(req,res)=>{
 //Show Particular Book=====
 router.get("/:id",wrapAsync(async(req,res)=>{
     const {id}=req.params;
-    const book=await booklist.findById(id).populate("reviews");
+    const book=await booklist
+        .findById(id)
+        .populate({ path: "reviews", populate: { path: "author" } })
+        .populate("owner");
     res.render("booklistings/show",{book});
 }))
 
