@@ -1,7 +1,8 @@
 <% layout("/layouts/boilerplate") %>
 
     <h1 class="heading">All Books</h1>
-
+<% if(books.length == 0) { %> <h3 class="text-center">No Books Available</h3> <% }  %>
+<% if(books.length != 0){ %>
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 ">
      <% for(let book of books) { %>
         <a href="/booklistings/<%= book._id %>">
@@ -26,5 +27,6 @@
 <% } %>
 
 </div>
+<% } %>
 
 

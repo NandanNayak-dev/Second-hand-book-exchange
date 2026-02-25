@@ -47,8 +47,8 @@
       </ul>
 
       <!-- Search -->
-      <form class="d-flex flex-column w-100 mt-3 mt-lg-auto" role="search">
-        <input class="form-control mb-2" type="search" placeholder="Search" />
+      <form class="d-flex flex-column w-100 mt-3 mt-lg-auto" role="search" method="post" action="/booklistings/search">
+        <input class="form-control mb-2" type="search" placeholder="Book Name" aria-label="Search" name="search" required />
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
     </div>

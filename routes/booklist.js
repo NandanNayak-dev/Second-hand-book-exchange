@@ -60,5 +60,19 @@ router.get("/:id",wrapAsync(async(req,res)=>{
         .populate("owner");
     res.render("booklistings/show",{book});
 }))
+router.post("/search",async(req,res)=>{
+    const search = (req.body.search || "").trim();
+    const safe = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const allBooks = await booklist.find({
+  $or: [
+    { title: { $regex: safe, $options: "i" } },
+    { author: { $regex: safe, $options: "i" } },
+  ],
+});
+
+res.render("booklistings/index", { books: allBooks });
+})
 
 module.exports=router;
+
