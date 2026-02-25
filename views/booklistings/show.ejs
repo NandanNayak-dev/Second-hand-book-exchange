@@ -20,6 +20,11 @@
 <form action="/booklistings/<%= book._id %>?_method=DELETE" method="post">
     <button class="btn btn-danger mt-3 mb-3 delete"><i class="fa-solid fa-trash"></i> Delete</button>
 </form>
+
+
+<% if(currentUser!=null && currentUser.username != book.owner.username) { %>
+    <button class="btn btn-warning mt-3 mb-3 delete"><i class="fa-solid fa-cart-shopping"></i></i> Buy</button>
+<% } %>
         </div>
     </div>
     <hr>

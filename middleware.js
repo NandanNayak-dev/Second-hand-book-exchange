@@ -5,6 +5,7 @@ const {booklistingSchema,reviewSchema}=require("./schema.js");
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
+        currentUser = null;
         // For non-GET requests, redirect back to the page user came from after login.
         const redirectUrl = req.method === "GET" ? req.originalUrl : (req.get("referer") || "/booklistings");
         req.session.redirectUrl = redirectUrl;
