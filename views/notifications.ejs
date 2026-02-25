@@ -1,2 +1,55 @@
 <% layout("/layouts/boilerplate") %>
-Notifications
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Notifications</h2>
+        <span class="badge bg-secondary"><%= notifications ? notifications.length : 0 %> total</span>
+      </div>
+
+      <% if (notifications && notifications.length > 0) { %>
+        <div class="list-group shadow-sm">
+          <% notifications.forEach((notice, idx) => { %>
+            <div class="list-group-item list-group-item-action py-3">
+              <div class="d-flex w-100 justify-content-between align-items-start">
+                <div>
+                  <h6 class="mb-1">Purchase Interest Alert</h6>
+                  <p class="mb-1">
+                    <strong><%= notice.userId ? notice.userId.username : "A user" %></strong>
+                    wants to buy your book
+                    <strong>"<%= notice.booklistingId ? notice.booklistingId.title : "Untitled Book" %>"</strong>.
+                  </p>
+
+                  <div class="small text-muted">
+                    <div>
+                      Buyer Email:
+                      <%= notice.userId && notice.userId.email ? notice.userId.email : "Not available" %>
+                    </div>
+                    <div>
+                      Book Price:
+                      <%= notice.booklistingId && notice.booklistingId.price != null
+                        ? "Rs. " + notice.booklistingId.price.toLocaleString("en-IN")
+                        : "Price not available" %>
+                    </div>
+                  </div>
+                </div>
+
+                <span class="badge text-bg-light border">#<%= idx + 1 %></span>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="card border-0 shadow-sm">
+          <div class="card-body text-center py-5">
+            <h5 class="card-title mb-2">No Notifications Yet</h5>
+            <p class="card-text text-muted mb-0">
+              You will see buyer alerts here when someone clicks Buy on your listed books.
+            </p>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>

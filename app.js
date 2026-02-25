@@ -72,7 +72,7 @@ app.get("/notifications", async (req, res, next) => {
       ]
     });
 
-    res.send(userWithNotifications.notifications);
+    res.render("notifications", { notifications: userWithNotifications.notifications });
     // or: res.json(userWithNotifications.notifications);
   } catch (err) {
     next(err);
