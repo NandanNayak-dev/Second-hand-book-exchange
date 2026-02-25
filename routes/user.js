@@ -3,11 +3,12 @@ const router = require("express").Router();
 const User=require("../models/user");
 const wrapAsync=require("../utils/wrapAsync");
 const passport = require("passport");
+const { saveRedirectUrl } = require("../middleware");
 
 router.get("/signup",(req,res)=>{
     res.render("users/signup");
 })
-router.post("/signup",wrapAsync(async(req,res)=>{
+router.post("/signup",wrapAsync(async(req,res,next)=>{
     try{
         const {email,username,password}=req.body;
         const user=new User({email,username});
@@ -28,11 +29,24 @@ router.post("/signup",wrapAsync(async(req,res)=>{
 router.get("/login",async(req,res)=>{
     res.render("users/login");
 })
-router.post("/login",passport.authenticate("local",{
+router.post("/login",saveRedirectUrl,passport.authenticate("local",{
     failureRedirect:"/login",
     failureFlash:true
 }),async(req,res)=>{
+    const redirectUrl = res.locals.redirectUrl || "/booklistings";
+    console.log(redirectUrl);
     req.flash("success","Welcome Back");
-    res.redirect("/booklistings");
+    res.redirect(redirectUrl);
 })
-module.exports=router;
+
+
+
+router.get("/logout", (req, res) => {
+    req.logout((err)=>{
+        if(err) return next(err);
+        req.flash("success","Goodbye!");
+        res.redirect("/booklistings");
+    })
+  });
+
+  module.exports=router;

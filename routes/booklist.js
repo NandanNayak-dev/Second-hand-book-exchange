@@ -2,6 +2,10 @@ const express=require('express');
 const router=express.Router();
 const wrapAsync=require('../utils/wrapAsync');  
 const booklist=require('../models/booklist');
+const Review=require("../models/review");
+const{isLoggedIn}=require('../middleware');
+    
+
 
 router.get("/",async(req,res)=>{
     const books=await booklist.find({});
@@ -9,11 +13,11 @@ router.get("/",async(req,res)=>{
 })
 //===============================
 //New Book Route=====
-router.get("/new",async(req,res)=>{
+router.get("/new",isLoggedIn,async(req,res)=>{
     res.render("booklistings/new");
 })
 //Create Book Route=====
-router.post("/",wrapAsync(async(req,res)=>{
+router.post("/",isLoggedIn,wrapAsync(async(req,res)=>{
     const book=new booklist(req.body.booklisting);
     book.owner=req.user._id;
     await book.save();
@@ -23,13 +27,13 @@ router.post("/",wrapAsync(async(req,res)=>{
 //==========================================
 
 //==========Get Edit route============
-router.get("/:id/edit",wrapAsync(async(req,res)=>{
+router.get("/:id/edit",isLoggedIn,wrapAsync(async(req,res)=>{
     const {id}=req.params;
     const bookToEdit=await booklist.findById(id);
     res.render("booklistings/edit",{bookToEdit});
 }))
 //=====Update route=========
-router.put("/:id",wrapAsync(async(req,res)=>{
+router.put("/:id",isLoggedIn,wrapAsync(async(req,res)=>{
     const {id}=req.params;
     const book=await booklist.findByIdAndUpdate(id,req.body.booklisting,{new:true});
     req.flash("success","Book Updated Successfully");
@@ -38,7 +42,7 @@ router.put("/:id",wrapAsync(async(req,res)=>{
 }))
 
 //======Delete route==========
-router.delete("/:id",wrapAsync(async(req,res)=>{
+router.delete("/:id",isLoggedIn,wrapAsync(async(req,res)=>{
     const {id}=req.params;
     const book=await booklist.findById(id);
     await Review.deleteMany({ _id: { $in: book.reviews } });

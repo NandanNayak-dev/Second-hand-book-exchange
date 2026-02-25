@@ -31,12 +31,19 @@
         <li class="nav-item">
           <a class="nav-link" href="/booklistings/new">Add New Book</a>
         </li>
-        <li class="nav-item">
+        <% if(!currentUser){ %>
+          <li class="nav-item">
           <a class="nav-link" href="/login">Login</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/signup">Sign Up</a>
         </li>
+        <% } %>
+        <% if(currentUser){ %>
+          <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+        <% } %>
       </ul>
 
       <!-- Search -->
