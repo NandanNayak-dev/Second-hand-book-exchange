@@ -25,6 +25,7 @@ const reviewRoutes=require("./routes/review")
 const userRoutes=require("./routes/user")
 
 const notifications=require("./models/buyAlert");
+const { isLoggedIn } = require("./middleware");
 //-----------------MONGOOSE CONNECTION----------------
 async function main() {
     await mongoose.connect("mongodb://127.0.0.1:27017/bookstore");
@@ -54,15 +55,17 @@ app.use((req,res,next)=>{
   res.locals.success=req.flash("success");
   res.locals.error=req.flash("error");
   res.locals.currentUser=req.user;
+  //Notificaion count
+  
   next();
 })
 
 //===============================
 app.get("/",(req,res)=>{
-    res.send("Root Route");
+    res.render("home");
 })
 
-app.get("/notifications", async (req, res, next) => {
+app.get("/notifications",isLoggedIn, async (req, res, next) => {
   try {
     const userWithNotifications = await User.findById(req.user._id).populate({
       path: "notifications",
@@ -78,6 +81,10 @@ app.get("/notifications", async (req, res, next) => {
     next(err);
   }
 });
+app.delete("/notifications/:notificationId", async (req, res, next) => {
+  await notifications.findByIdAndDelete(req.params.notificationId);
+  res.redirect("/notifications");
+})
 
 
 //-----------Routes-----------

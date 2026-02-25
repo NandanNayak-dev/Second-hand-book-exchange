@@ -35,7 +35,17 @@
                   </div>
                 </div>
 
-                <span class="badge text-bg-light border">#<%= idx + 1 %></span>
+                <div class="d-flex align-items-start gap-2">
+                  <span class="badge text-bg-light border">#<%= idx + 1 %></span>
+                  <form action="/notifications/<%= notice._id %>?_method=DELETE" method="post" class="m-0">
+                    <button
+                      type="submit"
+                      class="btn-close"
+                      style="transform: scale(0.85);"
+                      aria-label="Remove notification"
+                    ></button>
+                  </form>
+                </div>
               </div>
             </div>
           <% }) %>
