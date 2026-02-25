@@ -34,7 +34,7 @@ router.post("/login",saveRedirectUrl,passport.authenticate("local",{
     failureFlash:true
 }),async(req,res)=>{
     const redirectUrl = res.locals.redirectUrl || "/booklistings";
-    console.log(redirectUrl);
+
     req.flash("success","Welcome Back");
     res.redirect(redirectUrl);
 })

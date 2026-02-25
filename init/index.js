@@ -9,7 +9,7 @@ main().then(() => console.log("connected to database")).catch((err) => console.l
 
 const initDB=async()=>{
     await booklist.deleteMany({});
-    initData.data=initData.data.map((obj)=>({...obj,owner:'6995351bf1134505775d2bd4'}));
+    initData.data=initData.data.map((obj)=>({...obj,owner:'699e671ed3c8929e2a103c71'}));
     await booklist.insertMany(initData.data);
     console.log("database seeded");
    
