@@ -1,0 +1,42 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+              <h2 class="mb-1">Wallet</h2>
+              <p class="text-muted mb-0">
+                <%= user && user.username ? user.username : "User" %>
+                <% if (user && user.email) { %>
+                  (<%= user.email %>)
+                <% } %>
+              </p>
+            </div>
+            <span class="badge text-bg-success px-3 py-2">Active</span>
+          </div>
+
+          <div class="rounded-4 bg-light border p-4 mb-4">
+            <p class="text-muted mb-2">Available Balance</p>
+            <h1 class="display-6 mb-0 fw-bold">
+              Rs. <%= user && typeof user.wallet === "number"
+                ? user.wallet.toLocaleString("en-IN")
+                : "0" %>
+            </h1>
+          </div>
+
+          <p class="text-muted mb-4">
+            Your wallet is credited automatically when a listed book is sold.
+          </p>
+
+          <div class="d-flex flex-wrap gap-2">
+            <a href="/booklistings" class="btn btn-primary">Browse Books</a>
+            <a href="/notifications" class="btn btn-outline-secondary">View Notifications</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

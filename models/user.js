@@ -14,6 +14,10 @@ const userSchema = new Schema({
       ref: "BuyAlert",
     },
   ],
+  wallet: {
+    type: Number,
+    default: 1000,
+  },
 });
 
 userSchema.plugin(passportLocalMongoose);

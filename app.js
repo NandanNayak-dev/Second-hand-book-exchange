@@ -99,9 +99,27 @@ app.post("/notifications/:notificationId/:bookId/:buyerId/sell", isLoggedIn, asy
 
   await notifications.findByIdAndDelete(notificationId);
   req.flash("success", "Book sold successfully");
-  // await User.findByIdAndUpdate(req.user._id, { $pull: { notifications: notificationId } });
+  await User.findByIdAndUpdate(req.user._id, { $pull: { notifications: notificationId } });
+  //Wallet
+  const user = await User.findById(req.user._id);
+  user.wallet += book.price;
+  await user.save();
+
+  const buyer = await User.findById(buyerId);
+  buyer.wallet -= book.price;
+  await buyer.save();
+
 
   res.redirect(`/booklistings/${bookId}`);
+});
+
+app.get("/wallet",isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    res.render("wallet", { user });
+  } catch (err) {
+    next(err);
+  }
 });
 
 
