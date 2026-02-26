@@ -87,16 +87,18 @@ app.delete("/notifications/:notificationId", async (req, res, next) => {
   res.redirect("/notifications");
 })
 
-app.post("/notifications/:notificationId/:bookId/:buyerId/approve", isLoggedIn, async (req, res, next) => {
+app.post("/notifications/:notificationId/:bookId/:buyerId/sell", isLoggedIn, async (req, res, next) => {
   const { notificationId, bookId, buyerId } = req.params;
 
   const book = await booklist.findById(bookId);
   if (!book) return res.redirect("/notifications");
 
   book.owner = buyerId;
+  book.isBuyRequestSent = false;
   await book.save();
 
   await notifications.findByIdAndDelete(notificationId);
+  req.flash("success", "Book sold successfully");
   // await User.findByIdAndUpdate(req.user._id, { $pull: { notifications: notificationId } });
 
   res.redirect(`/booklistings/${bookId}`);
@@ -123,3 +125,4 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
   console.log("server is listening to port 8080");
 });
+

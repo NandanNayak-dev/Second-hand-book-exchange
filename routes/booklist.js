@@ -78,6 +78,13 @@ res.render("booklistings/index", { books: allBooks });
 router.post("/:ownerId/:currentUserId/:bookId/buy", async (req, res) => {
   const { currentUserId, bookId, ownerId } = req.params;
 
+  const book = await booklist.findById(bookId);
+  if (!book) return res.redirect("/booklistings");
+
+  book.isBuyRequestSent = true;
+  await book.save();
+
+
   const notification = new notifications({
     booklistingId: bookId,
     userId: currentUserId,

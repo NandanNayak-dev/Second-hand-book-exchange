@@ -34,6 +34,10 @@ const booklistSchema=new Schema({
   owner:{
     type:Schema.Types.ObjectId,
     ref:"User"
+  },
+  isBuyRequestSent:{
+    type:Boolean,
+    default:false
   }
 })
 const booklist=mongoose.model("booklist",booklistSchema);
