@@ -25,7 +25,7 @@
 
 <% if(currentUser && book.owner && currentUser._id.toString() !== book.owner._id.toString()) { %>
     <% if(!book.isBuyRequestSent){ %>
-      <form action="/booklistings/<%= book.owner._id %>/<%= currentUser._id %>/<%= book._id %>/buy" method="post">
+      <form action="/booklistings/<%= book.owner._id %>/<%= currentUser._id %>/<%= book._id %>/buy" method="post" class="buy-form" data-price="<%= book.price || 0 %>" data-wallet="<%= currentUser.wallet || 0 %>">
           <button class="btn btn-warning mt-3 mb-3 delete buybtn"><i class="fa-solid fa-cart-shopping"></i>Buy</button>
       </form>
     <% } else { %>
@@ -100,3 +100,24 @@
         
     </div>
 </div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const buyForm = document.querySelector(".buy-form");
+    if (!buyForm) return;
+
+    buyForm.addEventListener("submit", (event) => {
+      const bookPrice = Number(buyForm.dataset.price || 0);
+      const walletBalance = Number(buyForm.dataset.wallet || 0);
+
+      if (walletBalance < bookPrice) {
+        event.preventDefault();
+        const shortage = bookPrice - walletBalance;
+        alert(
+          `You cannot buy this book. Your balance is Rs. ${walletBalance.toLocaleString("en-IN")}, but this book costs Rs. ${bookPrice.toLocaleString("en-IN")}. You need Rs. ${shortage.toLocaleString("en-IN")} more.`
+        );
+      }
+    });
+  });
+</script>

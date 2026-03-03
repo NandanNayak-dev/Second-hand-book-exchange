@@ -1,114 +1,19 @@
-const express=require('express');
-const router=express.Router();
-const wrapAsync=require('../utils/wrapAsync');  
-const booklist=require('../models/booklist');
-const Review=require("../models/review");
-const{isLoggedIn,isOwner,validateBooklisting}=require('../middleware');
-const notifications=require("../models/buyAlert");
-const User=require("../models/user");
+const express = require("express");
+const router = express.Router();
+const wrapAsync = require("../utils/wrapAsync");
+const { isLoggedIn, isOwner, validateBooklisting } = require("../middleware");
+const bookController = require("../controllers/booklistings");
 
+router.get("/", wrapAsync(bookController.index));
+router.get("/new", isLoggedIn, bookController.renderNewForm);
+router.post("/", isLoggedIn, validateBooklisting, wrapAsync(bookController.createBook));
 
-router.get("/",async(req,res)=>{
-    const books=await booklist.find({});
-    res.render("booklistings/index",{books});
-})
-//===============================
-//New Book Route=====
-router.get("/new",isLoggedIn,async(req,res)=>{
-    res.render("booklistings/new");
-})
-//Create Book Route=====
-router.post("/",isLoggedIn,validateBooklisting,wrapAsync(async(req,res)=>{
-    const book=new booklist(req.body.booklisting);
-    book.owner=req.user._id;
-    await book.save();
-    req.flash("success","Book Added Successfully");
-    res.redirect(`/booklistings/${book._id}`);
-}))
-//==========================================
+router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(bookController.renderEditForm));
+router.put("/:id", isLoggedIn, isOwner, validateBooklisting, wrapAsync(bookController.updateBook));
+router.delete("/:id", isLoggedIn, isOwner, wrapAsync(bookController.deleteBook));
 
-//==========Get Edit route============
-router.get("/:id/edit",isLoggedIn,isOwner,validateBooklisting,wrapAsync(async(req,res)=>{
-    const {id}=req.params;
-    const bookToEdit=await booklist.findById(id);
-    res.render("booklistings/edit",{bookToEdit});
-}))
-//=====Update route=========
-router.put("/:id",isLoggedIn,isOwner,validateBooklisting,wrapAsync(async(req,res)=>{
-    const {id}=req.params;
-    const book=await booklist.findByIdAndUpdate(id,req.body.booklisting,{new:true});
-    req.flash("success","Book Updated Successfully");
-    res.redirect(`/booklistings/${book._id}`);
+router.get("/:id", wrapAsync(bookController.showBook));
+router.post("/search", wrapAsync(bookController.searchBooks));
+router.post("/:ownerId/:currentUserId/:bookId/buy", isLoggedIn, wrapAsync(bookController.buyBook));
 
-}))
-
-//======Delete route==========
-router.delete("/:id",isLoggedIn,isOwner,wrapAsync(async(req,res)=>{
-    const {id}=req.params;
-    const book=await booklist.findById(id);
-    await Review.deleteMany({ _id: { $in: book.reviews } });
-    await booklist.findByIdAndDelete(id);
-    req.flash("success","Book Deleted Successfully");
-    res.redirect("/booklistings");
-}))
-
-//Show Particular Book=====
-router.get("/:id",wrapAsync(async(req,res)=>{
-    const {id}=req.params;
-    const book=await booklist
-        .findById(id)
-        .populate({ path: "reviews", populate: { path: "author" } })
-        .populate("owner");
-    res.render("booklistings/show",{book});
-}))
-router.post("/search",async(req,res)=>{
-    const search = (req.body.search || "").trim();
-    const safe = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-const allBooks = await booklist.find({
-  $or: [
-    { title: { $regex: safe, $options: "i" } },
-    { author: { $regex: safe, $options: "i" } },
-  ],
-});
-
-res.render("booklistings/index", { books: allBooks });
-})
-
-router.post("/:ownerId/:currentUserId/:bookId/buy", async (req, res) => {
-  const { currentUserId, bookId, ownerId } = req.params;
-
-  const book = await booklist.findById(bookId);
-  if (!book) return res.redirect("/booklistings");
-
-  book.isBuyRequestSent = true;
-  await book.save();
-
-
-  const notification = new notifications({
-    booklistingId: bookId,
-    userId: currentUserId,
-  });
-
-  await notification.save();
-  await notification.populate("booklistingId userId");
-
-   
-    const user = await User.findByIdAndUpdate(
-      ownerId,
-      { $push: { notifications: notification._id } },
-      { new: true } // return updated user
-    ).populate({
-      path: "notifications",
-      populate: [
-        { path: "booklistingId" },
-        { path: "userId" }
-      ]
-    });
-
-    res.redirect(`/booklistings/${bookId}`);
-});
-
-
-module.exports=router;
-
+module.exports = router;
