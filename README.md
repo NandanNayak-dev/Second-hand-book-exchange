@@ -163,19 +163,4 @@ This project is actively structured as a complete end-to-end academic/personal m
 - wallet-backed transaction logic
 - notification-driven selling workflow
 
-## Future Enhancements
 
-- Add image upload support (Cloudinary / S3)
-- Add transaction history ledger per user
-- Add pagination and advanced filters (genre, condition, price range)
-- Add admin/moderation controls
-- Add automated tests (unit + integration)
-- Move secrets and DB config to environment variables
-
-## License
-
-ISC
-
----
-
-If you are exploring this project from GitHub, feel free to open an issue or suggest improvements.
