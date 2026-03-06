@@ -19,13 +19,11 @@ const booklistSchema=new Schema({
         type:Number,
         required:true
     },
-    image:{
-        filename:String,
-        type:String,
-        default:"https://www.alshameltechno.com/wp-content/themes/alshameltechno/images/sample.webp",
-        set:(v)=>v===""?"https://www.alshameltechno.com/wp-content/themes/alshameltechno/images/sample.webp":v
-    },
-     reviews:[
+    image: {
+    url:String,
+    filename:String
+  },
+    reviews:[
     {
       type:Schema.Types.ObjectId,
       ref:"Review"

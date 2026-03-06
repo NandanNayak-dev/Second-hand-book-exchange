@@ -7,7 +7,7 @@ module.exports.booklistingSchema=Joi.object({
        author:Joi.string().required(),
        description:Joi.string().required(),
        price:Joi.number().required(),
-       image:Joi.string().required()
+       image:Joi.any().optional()
    }).required()
 })
 

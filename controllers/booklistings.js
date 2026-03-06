@@ -15,6 +15,9 @@ module.exports.renderNewForm = (req, res) => {
 module.exports.createBook = async (req, res) => {
   const book = new booklist(req.body.booklisting);
   book.owner = req.user._id;
+  let url=req.file.path;
+  book.image.url=url;
+  book.image.filename=req.file.filename;
   await book.save();
   req.flash("success", "Book Added Successfully");
   res.redirect(`/booklistings/${book._id}`);
