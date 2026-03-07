@@ -4,6 +4,10 @@ A full-stack web application where users can list, discover, review, request, an
 
 This project focuses on practical marketplace logic: ownership checks, authenticated actions, reviews, seller notifications, and wallet safety so users cannot place buy requests beyond available balance.
 
+## Live Website
+
+https://second-hand-book-exchange-b3os.onrender.com/
+
 ## Highlights
 
 - User authentication with signup/login/logout (`Passport.js` + session-based auth)
@@ -162,5 +166,4 @@ This project is actively structured as a complete end-to-end academic/personal m
 - reviews
 - wallet-backed transaction logic
 - notification-driven selling workflow
-
 
