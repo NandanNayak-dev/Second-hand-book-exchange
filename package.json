@@ -1,6 +1,6 @@
 {
-  "engines":{
-    "node":"24"
+  "engines": {
+    "node": "24"
   },
   "name": "second-hand-book-exchange",
   "version": "1.0.0",
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/NandanNayak-dev/Second-hand-book-exchange#readme",
   "dependencies": {
-    "cloudinary": "^2.9.0",
+    "cloudinary": "^1.41.3",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^6.0.0",
     "dotenv": "^17.3.1",
