@@ -12,7 +12,7 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-
+const MongoStore = require("connect-mongo").default;
 app.use(express.urlencoded({ extended: true }));
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
@@ -26,15 +26,31 @@ const userRoutes = require("./routes/user");
 const notificationRoutes = require("./routes/notification");
 const walletRoutes = require("./routes/wallet");
 const homeRoutes = require("./routes/home");
+const dbUrl=process.env.ATLASDB_URL;
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/bookstore");
+  await mongoose.connect(dbUrl);
 }
 main()
   .then(() => console.log("connected to database"))
   .catch((err) => console.log(err));
 
+
+  const store=MongoStore.create({
+  mongoUrl:dbUrl,
+  crypto:{
+    secret:process.env.SECRET
+  },
+  touchAfter:24*60*60
+});
+
+store.on("error",function(e){
+  console.log("session store error",e);
+})
+
+
 const sessionOptions = {
+  store,
   secret: "mysupersecretcode",
   resave: false,
   saveUninitialized: true,
@@ -66,6 +82,9 @@ app.use("/notifications", notificationRoutes);
 app.use("/wallet", walletRoutes);
 app.use("/", userRoutes);
 
+app.get("/", (req, res) => {
+  res.redirect("/booklistings");
+});
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
@@ -78,4 +97,3 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
   console.log("server is listening to port 8080");
 });
-
