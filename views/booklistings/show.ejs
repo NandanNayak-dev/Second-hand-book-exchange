@@ -2,7 +2,7 @@
 
 <div class="container mt-4">
     <div class="card col mb-4 show">
-        <img src="<%= book.image.url %>" class="card-img-top" alt="book-image" style="height: 20rem; width: 40rem; ">
+        <img src="<%= book.image.url %>" class="card-img-top show-image" alt="book-image">
         <div class="card-body">
             <h3 class="card-title mb-3 "><%= book.title %></h3>
             <p class="card-text"><%= book.description %></p>
@@ -39,7 +39,7 @@
     <hr>
 
         <div class="row">
-        <div class="col-8 offset-2">
+        <div class="col-12 col-md-8 offset-md-2">
             <h4>Leave a Review</h4>
 
             <form action="/booklistings/<%= book._id %>/reviews" method="post" novalidate class="needs-validation">
@@ -75,7 +75,7 @@
         </div>
 <hr>
 <% if(book.reviews.length!==0) {%>
-        <div class="col-8 offset-2">
+        <div class="col-12 col-md-8 offset-md-2">
             <h4>Reviews</h4>
             <% for(let review of book.reviews) { %>
             <div class="card mb-3">
@@ -95,7 +95,7 @@
             </div>
             <% } %>
         </div>
-        <% } else { %> <div class="col-8 offset-2 mb-4"><h4 class="text-center">No Reviews Available</h4></div> <% } %>
+        <% } else { %> <div class="col-12 col-md-8 offset-md-2 mb-4"><h4 class="text-center">No Reviews Available</h4></div> <% } %>
 
         
     </div>
